@@ -1,0 +1,474 @@
+sdd_config_values:
+  config_gcs_check: None
+  gpu_vendor: 'nvidia'
+
+  #EXPERIMENTAL TEST PARAMETERS
+  num_image_each_class: 900
+  train_append: False
+  num_of_append: 1
+
+  is_cross_validation: False
+  k_folds: 2
+    
+  param_search:
+    focal_gamma: [2, 1]
+    #gradient_acc_batch: [16, 32, 64]
+    #learning_rate: [0.01, 0.001, 0.0001]
+    #epochs: [30,  40, 50]
+    #augmentation: ['resnext', 'inceptionv4', 'autoaugment']
+
+  #!!!!!FOLDER CHECK!!!##
+  #TODO change root and rootvm with your directory
+  root: "/home/18193/sdd/sdd-general/configs/sdd-files/" #"/home/18193/sdd/sdd-general/configs/sdd-files/" #"/app/configs/sdd_files/"
+  root_vm: "/home/18193/sdd/sdd-general/configs/sdd-files/" #"/home/18193/sdd/sdd-general/configs/sdd-files/" #"/app/configs/sdd_files/" 
+  #restart_file: "restart_file.pkl"
+  mlflow_experiment: Test Debarpan
+  gcs_mlflow_folder: 'mlflow'
+  gcs_dataset_folder: 'public_dataset'
+  function: 'train' # 'predict_all' #'create_dataset' #'train' # create_dataset
+  predict_model: 
+  predict_model_name: 'vit'
+  modellist: ['vit'] #resnext101_64x4d', 'resnext50_32x4d', 'inceptionv4'] #, 'resnext101_64x4d', 'inceptionv4', 'resnext50_32x4d'] #'nasnet'] # 'resnext50_32x4d', 'regnety']
+  skin_ratio_threshold: 0
+  size: [ 224, 224 ]
+
+  #Data Folders for CNN
+  #train_folder: 'data/data_2_13class_masked_filtered'
+  #gcs_train_folder: 'gs://oro-ds-test-bucket/resized/sdd_files/data_technical_test'
+  train_folder: 'data_/data_2_13class_masked_filtered_train_test/train'
+  valid_folder: 'data_/data_2_13class_masked_filtered_train_test/test'
+  train_data_df: "train_df_13class.csv"
+  dl_model_path: "models/dl/"
+ 
+  class_list: ['mole', 'no_mole']
+  
+  
+  # ['rosacea_inflammatory', 'atopic_dermatitis', 'rosacea_erythemato_telangiectasique','peri_oral_dermatitis',
+  #               'seborrheic_keratosis','psoriasis_vulgar','seborrheic_dermatitis','nummular_eczema',
+  #               'tinea_versicolor','chronic_hand_eczema','vulgar_warts','folliculitis','alopecia_androgenic',
+  #               'dyshidrosis','nevus','melasma','alopecia_areata','intertrigo','urticaria','vitiligo','keratosis_pilaris',
+  #               'molluscum','cheilitis_eczematous','tinea_corporis','prurigo_nodularis','actinic_keratosis',
+  #               'genital_warts','plane_warts','pityriasis_rosae','melanonychia','psoriasis_pustular_palmoplantar',
+  #               'granuloma_annulare','psoriasis_guttate','lichen_simplex_chronicus','shingles','herpes_simplex', 'acne_scars', 'acne']
+  test_percentage: 0.2
+
+
+  #Balance classes
+  subsample_max_values: 600
+
+  subsample_max_per_disease:
+  #  acne_mixed: 3900
+  #  acne_cystic: 302
+  #  acne_scars: 144
+  #  acne_comedos: 203
+  #  acne_excoriated: 141
+  #  peri_oral_dermatitis: 480
+  #  folliculitis: 400
+  #  rosacea_inflammatory: 480
+  #  rosacea_erythemato_telangiectasique: 480
+  #  melasma: 400
+  #  seborrheic_dermatitis: 400
+  #  plane_warts: 400
+
+  random_state: 42
+
+  model:
+    resnext101_64x4d:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0"
+      gpus: [0]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 10
+      freeze_layers: True
+      percentage_freeze: 0.4
+      weight_decay: 0.0005
+      learning_rate: 0.003
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      train_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: True
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/train_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}
+
+
+    resnext101_32x4d:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0"
+      gpus: [0]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 10
+      freeze_layers: True
+      percentage_freeze: 0.4
+      weight_decay: 0.0005
+      learning_rate: 0.003
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      train_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: True
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/train_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}
+
+
+    inceptionv4:
+      size: [224,224]# crops
+      image_size: 448
+      visible_gpus: "0"
+      one_tag: False
+      gpus: [0]
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 2
+      asymmetric_gamma_pos: 0
+      asymmetric_clip: 0.05
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 1
+      freeze_layers: False
+      percentage_freeze: 0
+      weight_decay: 0.0005
+      learning_rate: 0.003
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True        
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: True
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: 
+
+    bit:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0"
+      gpus: [0]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 1
+      freeze_layers: False
+      percentage_freeze: 0
+      weight_decay: 0.0005
+      learning_rate: 0.003
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      train_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: False
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/train_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}
+
+  
+    vit:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0"
+      gpus: [0]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'cosine_annealing'
+      warmup_epochs: 2
+      cosine_cycle_limit: 10
+      cosine_cycle_epochs: 5
+      cosine_cycle_decay: 0.7
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 1
+      freeze_layers: False
+      percentage_freeze: 0
+      weight_decay: 0.0005
+      learning_rate: 0.0001
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'randaugment'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0
+      subsamble_set: True   
+      test_set_from_file: False
+      val_set_from_file: False
+      train_set_from_file: False
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: False
+      mixup: True
+      mixup_alpha: 0.1
+      task: 'single_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: '' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path:  '' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path:  '' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}
+    
+    vit_base_patch32_224_in21k:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0"
+      gpus: [0]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 2
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 1
+      freeze_layers: False
+      percentage_freeze: 0
+      weight_decay: 0.0005
+      learning_rate: 0.0001
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      train_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: False
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/train_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}  
+
+    vit_huge:
+      size: [224,224]# crops
+      image_size: 256
+      visible_gpus: "0,1"
+      gpus: [0,1]
+      one_tag: True
+      gradient_acc: True
+      gradient_acc_batch: 32
+      batch_size: 8
+      optimizer: 'sgd'
+      scheduler: 'onecycle'
+      onecycle_three_phase: False
+      scheduler_steps: 2
+      loss: 'asymmetric'
+      asymmetric_gamma_neg: 4
+      asymmetric_gamma_pos: 1
+      asymmetric_clip: 0.4
+      focal_gamma: 1
+      focal_alpha: 0.25
+      epochs: 1
+      freeze_layers: False
+      percentage_freeze: 0
+      weight_decay: 0.0005
+      learning_rate: 0.0001
+      momentum: 0.9
+      gamma: 0.5
+      early_stopping: False
+      val_set: True
+      patience: 2
+      num_workers: 4
+      augmentation: 'random_crop'
+      resized_crop_scale: 0.15
+      multi_label_threshold: 0.5
+      check_ratio: True
+      skin_ratio_threshold: 0.1
+      subsamble_set: True   
+      test_set_from_file: True
+      val_set_from_file: True
+      train_set_from_file: True
+      ml_decoder: False
+      merge_acne: False
+      masking_skin: False
+      task: 'multi_label' #['muli_label, 'single_label', 'binary']
+      test_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      val_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/val_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      train_set_path: 'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/train_set_public.csv' #'gs://oro-ds-test-bucket/sdd_acne_files/models/dl/results/test_set_initial.csv'
+      process:
+      save_model: False
+      params_settings: # list of parameters to try-- will overwrite the one above
+        #0: {loss: 'asymmetric'}
+        1: {loss: 'asymmetric_single_label', task: 'single_label'}
+
+  pg_host: "127.0.0.1" #"192.168.1.24",
+  pg_database: "postgres"
+  pg_user: "postgres"
+  pg_password: "O37Bcglwnrcq26lt" #"1209"
+
+
+  #GCS (to save experiment results)
+  gc_project: 'playground-datascience-289517'
+  #json_key_path: "/tmp/auth_keys/auth.json"
+  json_key_path: "/home/elcinergin/sdd/sdd-general/dist/auth.json"
+  gcs_folder: "sdd_Debarpan"
+  dataset_version: 1.0
+  gcs_bucket: "oro-ds-test-bucket"
+
+  #GCS-Image
+  gc_project_img: 'playground-datascience-289517'
+  json_key_path_img: "extra/playground-datascience-289517-4a213c02630a.json"
+  gcs_folder_img: "sdd_files"
+  gcs_bucket_img: "app__app-staging-dermago-ca"
+
+  pg_host_derminator: "127.0.0.1"#"34.95.59.252" #"192.168.1.24",
+  pg_database_derminator: "derminator_api"
+  pg_user_derminator: "1W67OXHAUj2PzpMw3B3f"
+  pg_password_derminator: "OKHDOq0Gtn4XSopLeddTwsQIX0gcs9Uib6" #"1209"
+  derminator_json: "extra/staging-tools-dermago-d3bd8d788ba5.json"
+
+   
+  
+
+
