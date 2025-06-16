@@ -1,6 +1,6 @@
 # Credentials and configs
 auth.json
-config_*.yaml
+config_recent.yaml
 *.yaml
 *.env
 
