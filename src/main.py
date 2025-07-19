@@ -11,7 +11,7 @@ from loguru import logger
 from src.utils.gcs_utils import set_environement_variable
 
 is_env_variables_set = set_environement_variable()
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/home/gauthies/sdd/sdd-general/dist/auth.json'
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'path to auth.json file'
 
 
 from src.utils import envs 

@@ -10,7 +10,12 @@ __pycache__/
 *.egg-info/
 
 # Notebooks
+notebooks/
 .ipynb_checkpoints/
+dd-creation-dataset-per-session.ipynb
+
+# Data files
+store.db
 
 # System files
 .DS_Store
@@ -19,3 +24,8 @@ Thumbs.db
 # Virtual environments
 venv/
 .env/
+
+# Log files
+ds-sdd.log
+
+Dockerfile
