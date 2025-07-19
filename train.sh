@@ -5,7 +5,7 @@ cd /
 #/cloud_sql_proxy -credential_file=/path -instances=$DS_DB=tcp: &
 #/cloud_sql_proxy -credential_file=/path -instances=$DERMINATOR_DB=tcp: &
 
-/cloud_sql_proxy  -instances=$DS_DB=tcp:5432 &
+/cloud_sql_proxy  -instances=$DS_DB=tcp:portNumber &
 # /cloud_sql_proxy  -instances=$DERMINATOR_DB=tcp:portnumber &
 
 #/cloud_sql_proxy -credential_file=/path -instances=$DS_DB=tcp:portnumber &

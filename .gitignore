@@ -29,3 +29,5 @@ venv/
 ds-sdd.log
 
 Dockerfile
+
+mlruns/
