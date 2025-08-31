@@ -1,6 +1,6 @@
 # AI-Assisted Mole Detection for Teledermatology Triage
 **Triaging system via Vision Transformer (ViT) and Nested Hierarchical Transformer (NesT) to detect nevi from dermatological images**
-*Companion codebase to the published study in Informatics in Medicine Unlocked (2023)*
+*Companion codebase to the published study in Informatics in Medicine Unlocked (2023). Please find the paper at https://doi.org/10.1016/j.imu.2023.101311*
 
 ---
 
@@ -28,3 +28,35 @@ mole-detection/
 ├─ train_set_initial.csv # Train split manifest
 ├─ validation_set.csv # Validation split manifest
 └─ test_set_initial.csv # Test split manifest
+
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/Debarpan98/mole-detection.git
+cd mole-detection
+
+python -m venv .venv && source .venv/bin/activate   # on Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+## Data
+
+The repository ships with CSV manifests for the initial splits:
+
+train_set_initial.csv
+
+validation_set.csv
+
+test_set_initial.csv
+
+Each CSV should map images to labels (binary: mole vs. no_mole).
+If you are using your own data, replicate the same CSV format and update paths accordingly.
+
+Tip: Store images in any folder structure you prefer; the CSVs should contain absolute or project-relative paths plus the label column.
+Keep class imbalance in mind when reporting metrics.
+
+
