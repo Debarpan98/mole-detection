@@ -45,7 +45,9 @@ The dataset used in this project was primarily curated by **OROHealth Inc.**, co
 - Even after augmentation, the dataset remained highly imbalanced, with ~96% of samples being *non-mole*.  
 - For training stability, **sub-sampling** was applied — limiting to **no more than 600 images per class** in the final training set.
 
-![Dataset Distribution](illustrations/data_dist.jpg)
+<p align="center">
+  <img src="illustrations/data_dist.jpg" alt="Class Distribution" width="500"/>
+</p>
 
 The repository ships with CSV manifests for the initial splits:
 
@@ -60,7 +62,10 @@ If you are using your own data, replicate the same CSV format and update paths a
 > Keep class imbalance in mind when reporting metrics.
 
 ## Model Architecture
-![Dataset Distribution](illustrations/NesT_arch.jpg)
+<p align="center">
+  <img src="illustrations/NesT_arch.jpg" alt="NesT Model Architecture" width="500"/>
+</p>
+
 
 ## Reproducing Paper-Level Results
 
