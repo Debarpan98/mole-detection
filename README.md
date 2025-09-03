@@ -1,4 +1,4 @@
-# AI-Assisted Mole Detection for Teledermatology Triage
+# AI-assisted mole detection for online dermatology triage in telemedicine settings
 **Triaging system via Vision Transformer (ViT) and Nested Hierarchical Transformer (NesT) to detect nevi from dermatological images.**
 
 *Codebase to the published study in Informatics in Medicine Unlocked (2023). Please feel free to take a look at the paper at https://doi.org/10.1016/j.imu.2023.101311*
