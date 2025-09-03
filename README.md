@@ -73,7 +73,7 @@ If you are using your own data, replicate the same CSV format and update paths a
 - Evaluate both **ViT** and **NesT** under identical augmentations and training schedules.  
 - For fair comparison, fix random seeds, log package versions, and pin dependency versions from `requirements.txt`.  
 
-## Results Template
+## Results Sneakpeek
 
 Best performing experiments of each model with onecycle scheduler with regards to recall in test images with moles
 | Model | Gradient Accumulation Batch | Optimizer | Loss Function| Learning Rate | Mole Recall |
@@ -91,6 +91,8 @@ Confusion Matrix of the best performing NesT model:
 | Mole       | 127            | 9                  | 136   |
 | Non-mole   | 7              | 277                | 284   |
 | **Total**  | 145            | 275                | 420   |
+
+For a detailed description of the experimental setup and corresponding performance metrics, please refer to the paper mentioned above. 
 
 ## Ethical Use & Considerations
 
