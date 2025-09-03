@@ -10,7 +10,7 @@ This repository implements an AI triage system that identifies **mole (nevus) pr
 
 ## Key Contributions
 
-- **Clinical triage framing:** Optimizes for **high recall** on mole-positive cases while maintaining strong precision and accuracy.  
+- **Clinical triage framing:** Optimizes for **high recall** on mole-positive cases while maintaining strong precision and accuracy and reducing waiting time from 92 days on average to 2 days. 
 - **Transformer-based baselines:** Comparison of **NesT vs SOTA models** (prior to 2022) for this teledermatology use case.  
 - **Reproducible splits:** Repository includes initial train/val/test CSV structures to standardize experiments
 
